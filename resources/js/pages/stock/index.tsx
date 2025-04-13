@@ -2,17 +2,18 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { Stock } from '@/types';
+import { BreadcrumbItem, Stock } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowDownToLine, ArrowUpFromLine, BarChart4, History } from 'lucide-react';
 
-interface StocksProps {
+interface Props {
     stocks: (Stock & { product: { name: string; sku: string } })[];
+    breadcrumbs: BreadcrumbItem[];
 }
 
-export default function Index({ stocks }: StocksProps) {
+export default function Index({ stocks, breadcrumbs }: Props) {
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Stock Management" />
 
             <div className="py-6">

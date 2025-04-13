@@ -96,6 +96,7 @@ export interface Stock {
     id: number;
     store_id: number;
     product_id: number;
+    product: Product;
     quantity: number;
     reorder_level: number;
     location: string;
@@ -108,6 +109,7 @@ export interface StockTransaction {
     store_id: number;
     product_id: number;
     user_id: number;
+    user: User;
     quantity: number;
     type: string;
     reference: string;

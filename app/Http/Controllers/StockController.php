@@ -20,12 +20,17 @@ class StockController extends Controller
                 ->with('error', 'Please set up your store first.');
         }
 
+        $breadcrumbs = [
+            ['title' => 'Stocks', 'href' => route('stocks.index')],
+        ];
+
         $stocks = Stock::where('store_id', $store->id)
             ->with('product')
             ->get();
 
         return Inertia::render('stock/index', [
-            'stocks' => $stocks
+            'stocks' => $stocks,
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 
@@ -42,9 +47,16 @@ class StockController extends Controller
             ->where('status', 'active')
             ->get();
 
+        $breadcrumbs = [
+            ['title' => 'Stocks', 'href' => route('stocks.index')],
+            ['title' => 'In'],
+        ];
+
         return Inertia::render('stock/new-edit-form', [
+            'breadcrumbs' => $breadcrumbs,
             'products' => $products,
             'type' => 'in'
+
         ]);
     }
 
@@ -57,6 +69,11 @@ class StockController extends Controller
                 ->with('error', 'Please set up your store first.');
         }
 
+        $breadcrumbs = [
+            ['title' => 'Stocks', 'href' => route('stocks.index')],
+            ['title' => 'Out'],
+        ];
+
         $products = $store->products()
             ->where('status', 'active')
             ->with('stocks')
@@ -68,6 +85,7 @@ class StockController extends Controller
             });
 
         return Inertia::render('stock/new-edit-form', [
+            'breadcrumbs' => $breadcrumbs,
             'products' => $products,
             'type' => 'out'
         ]);
@@ -144,6 +162,11 @@ class StockController extends Controller
                 ->with('error', 'Please set up your store first.');
         }
 
+        $breadcrumbs = [
+            ['title' => 'Stocks', 'href' => route('stocks.index')],
+            ['title' => 'History'],
+        ];
+
         $product = Product::where('id', $productId)
             ->where('store_id', $store->id)
             ->firstOrFail();
@@ -155,6 +178,7 @@ class StockController extends Controller
             ->paginate(15);
 
         return Inertia::render('stock/history', [
+            'breadcrumbs' => $breadcrumbs,
             'product' => $product,
             'transactions' => $transactions
         ]);
@@ -168,6 +192,11 @@ class StockController extends Controller
             return redirect()->route('store.profile')
                 ->with('error', 'Please set up your store first.');
         }
+
+        $breadcrumbs = [
+            ['title' => 'Stocks', 'href' => route('stocks.index')],
+            ['title' => 'Report'],
+        ];
 
         // Get stock value summary
         $stocks = Stock::where('store_id', $store->id)
@@ -205,6 +234,7 @@ class StockController extends Controller
             ->get();
 
         return Inertia::render('stock/report', [
+            'breadcrumbs' => $breadcrumbs,
             'summary' => [
                 'totalStockValue' => $totalStockValue,
                 'totalItems' => $totalItems,

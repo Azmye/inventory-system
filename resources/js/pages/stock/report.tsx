@@ -4,33 +4,38 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { idrFormatter } from '@/lib/utils';
+import { Product, Stock, StockTransaction } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { AlertCircle, DollarSign, Package } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-interface ReportProps {
+type TopSellingProducts = {
+    product: Product;
+    product_id: number;
+    total_sold: number;
+};
+
+interface Props {
     summary: {
         totalStockValue: number;
         totalItems: number;
         totalProducts: number;
         lowStockItems: number;
     };
-    topSellingProducts: any[];
-    recentTransactions: any[];
-    stocks: any[];
+    topSellingProducts: TopSellingProducts[];
+    recentTransactions: StockTransaction[];
+    stocks: Stock[];
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
-const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    }).format(value);
-};
-
-export default function Report({ summary, topSellingProducts, recentTransactions, stocks }: ReportProps & any) {
+export default function Report({ summary, topSellingProducts, recentTransactions, stocks }: Props) {
+    console.log({
+        topSellingProducts,
+        recentTransactions,
+        stocks,
+    });
     // Prepare data for charts
     const topProductsData = topSellingProducts.map((item) => ({
         name: item.product.name.length > 15 ? item.product.name.substring(0, 15) + '...' : item.product.name,
@@ -39,7 +44,7 @@ export default function Report({ summary, topSellingProducts, recentTransactions
     }));
 
     // Prepare stock value by category data
-    const stockByCategory = stocks.reduce((acc: any, stock: any) => {
+    const stockByCategory = stocks.reduce((acc: any, stock: Stock) => {
         const categoryName = stock.product.category ? stock.product.category.name : 'Uncategorized';
         if (!acc[categoryName]) {
             acc[categoryName] = {
@@ -133,7 +138,7 @@ export default function Report({ summary, topSellingProducts, recentTransactions
                                         <XAxis dataKey="name" />
                                         <YAxis />
                                         <Tooltip
-                                            formatter={(value: any, name: any, props: any) => {
+                                            formatter={(value: any) => {
                                                 return [value, 'Quantity Sold'];
                                             }}
                                             labelFormatter={(label: string) => {
@@ -169,7 +174,7 @@ export default function Report({ summary, topSellingProducts, recentTransactions
                                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                             ))}
                                         </Pie>
-                                        <Tooltip formatter={(value: any) => [formatCurrency(value), 'Stock Value']} />
+                                        <Tooltip formatter={(value: any) => [idrFormatter.format(value), 'Stock Value']} />
                                         <Legend />
                                     </PieChart>
                                 </ResponsiveContainer>

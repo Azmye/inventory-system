@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { Product, StockTransaction } from '@/types';
+import { BreadcrumbItem, Product, StockTransaction } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { format } from 'date-fns';
 
@@ -30,11 +30,12 @@ interface HistoryProps {
         to: number;
         total: number;
     };
+    breadcrumbs: BreadcrumbItem[];
 }
 
-export default function History({ product, transactions }: HistoryProps) {
+export default function History({ product, transactions, breadcrumbs }: HistoryProps) {
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Stock History - ${product.name}`} />
 
             <div className="py-12">

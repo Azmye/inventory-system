@@ -111,7 +111,7 @@ export default function StockForm({ products, breadcrumbs, type, stock }: Props)
                                                         {products.map((product) => (
                                                             <SelectItem key={product.id} value={product.id.toString()}>
                                                                 {product.name}
-                                                                {type === 'out' && ` (Current: ${product.current_stock || 0})`}
+                                                                {type === 'out' && ` (Current: ${product.stock.quantity || 0})`}
                                                             </SelectItem>
                                                         ))}
                                                     </SelectContent>
@@ -122,7 +122,7 @@ export default function StockForm({ products, breadcrumbs, type, stock }: Props)
                                     />
 
                                     {/* Low stock warning */}
-                                    {selectedProduct && type === 'out' && selectedProduct.current_stock <= 0 && (
+                                    {selectedProduct && type === 'out' && selectedProduct.stock.quantity <= 0 && (
                                         <Alert variant="destructive" className="mb-4">
                                             <AlertCircle className="h-4 w-4" />
                                             <AlertDescription>This product is out of stock</AlertDescription>
