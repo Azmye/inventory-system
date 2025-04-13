@@ -41,3 +41,77 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Store {
+    id: number;
+    user_id: number;
+    name: string;
+    address: string;
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+    phone: string;
+    email: string;
+    website: string;
+    products: Product[];
+    stocks: Stock[];
+    stockTransactions: StockTransaction[];
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Category {
+    id: number;
+    store_id: number;
+    name: string;
+    products: Product[];
+    description: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Product {
+    id: number;
+    store_id: number;
+    category_id: number;
+    name: string;
+    description: string;
+    sku: string;
+    barcode: string;
+    price: number;
+    cost: number;
+    tax: number;
+    weight: number;
+    image: string;
+    status: string;
+    stocks: Stock[];
+    stockTransactions: StockTransaction[];
+    category: Category;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Stock {
+    id: number;
+    store_id: number;
+    product_id: number;
+    quantity: number;
+    reorder_level: number;
+    location: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface StockTransaction {
+    id: number;
+    store_id: number;
+    product_id: number;
+    user_id: number;
+    quantity: number;
+    type: string;
+    reference: string;
+    notes: string;
+    created_at: string;
+    updated_at: string;
+}

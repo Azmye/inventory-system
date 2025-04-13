@@ -23,8 +23,9 @@ class DashboardController extends Controller
         // Get product count
         $productCount = $store->products()->count();
 
+
         // Get total stock value
-        $stockValue = Stock::where('store_id', $store->id)
+        $stockValue = Stock::where('stocks.store_id', $store->id)
             ->join('products', 'stocks.product_id', '=', 'products.id')
             ->selectRaw('SUM(stocks.quantity * products.cost) as total_value')
             ->first()
@@ -52,6 +53,9 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
+        $store = Auth::user()->stores()->first();
+
+
         return Inertia::render('dashboard', [
             'stats' => [
                 'productCount' => $productCount,
@@ -59,7 +63,8 @@ class DashboardController extends Controller
                 'lowStockCount' => $lowStockCount,
             ],
             'recentTransactions' => $recentTransactions,
-            'topProducts' => $topProducts
+            'topProducts' => $topProducts,
+            'store' => $store
         ]);
     }
 }

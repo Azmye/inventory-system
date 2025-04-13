@@ -29,8 +29,13 @@ class ProductController extends Controller
                 return $product;
             });
 
-        return Inertia::render('Products/Index', [
-            'products' => $products
+        $breadcrumbs = [
+            ['title' => 'Products', 'href' => route('products.index')],
+        ];
+
+        return Inertia::render('product/index', [
+            'products' => $products,
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 
@@ -45,8 +50,14 @@ class ProductController extends Controller
 
         $categories = $store->categories;
 
-        return Inertia::render('Products/Create', [
-            'categories' => $categories
+        $breadcrumbs = [
+            ['title' => 'Products', 'href' => route('products.index')],
+            ['title' => 'Create'],
+        ];
+
+        return Inertia::render('product/new-edit-form', [
+            'categories' => $categories,
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 
@@ -140,7 +151,7 @@ class ProductController extends Controller
             ->limit(10)
             ->get();
 
-        return Inertia::render('Products/Show', [
+        return Inertia::render('product/Show', [
             'product' => $product,
             'recentTransactions' => $recentTransactions
         ]);
@@ -154,7 +165,7 @@ class ProductController extends Controller
         $store = Auth::user()->stores()->first();
         $categories = $store->categories;
 
-        return Inertia::render('Products/Edit', [
+        return Inertia::render('product/new-edit-form', [
             'product' => $product,
             'categories' => $categories
         ]);

@@ -12,14 +12,14 @@ class StoreController extends Controller
     public function index()
     {
         $stores = Auth::user()->stores;
-        return Inertia::render('Store/Index', [
+        return Inertia::render('store/index', [
             'stores' => $stores
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('Store/Create');
+        return Inertia::render('store/create');
     }
 
     public function store(Request $request)
@@ -46,7 +46,7 @@ class StoreController extends Controller
     {
         $this->authorize('view', $store);
 
-        return Inertia::render('Store/Show', [
+        return Inertia::render('store/show', [
             'store' => $store
         ]);
     }
@@ -55,7 +55,7 @@ class StoreController extends Controller
     {
         $this->authorize('update', $store);
 
-        return Inertia::render('Store/Edit', [
+        return Inertia::render('store/edit', [
             'store' => $store
         ]);
     }
@@ -103,8 +103,14 @@ class StoreController extends Controller
             ]);
         }
 
-        return Inertia::render('Store/Profile', [
-            'store' => $store
+        $breadcrumbs = [
+            ['title' => 'Home', 'href' => route('dashboard')],
+            ['title' => 'Profile', 'href' => route('store.profile')],
+        ];
+
+        return Inertia::render('store/profile', [
+            'store' => $store,
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 
