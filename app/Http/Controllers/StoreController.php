@@ -38,7 +38,7 @@ class StoreController extends Controller
 
         $store = Auth::user()->stores()->create($validated);
 
-        return redirect()->route('stores.show', $store->id)
+        return redirect()->route('store.show', $store->id)
             ->with('success', 'Store created successfully.');
     }
 
@@ -78,7 +78,7 @@ class StoreController extends Controller
 
         $store->update($validated);
 
-        return redirect()->route('stores.show', $store->id)
+        return redirect()->route('dashboard', $store->id)
             ->with('success', 'Store updated successfully.');
     }
 
@@ -88,7 +88,7 @@ class StoreController extends Controller
 
         $store->delete();
 
-        return redirect()->route('stores.index')
+        return redirect()->route('dashboard')
             ->with('success', 'Store deleted successfully.');
     }
 
@@ -137,6 +137,7 @@ class StoreController extends Controller
 
         $store->update($validated);
 
-        return redirect()->back()->with('success', 'Store profile updated successfully.');
+        return redirect()->route('dashboard')
+            ->with('success', 'Store updated successfully.');
     }
 }

@@ -36,11 +36,9 @@ export default function Profile({ store, breadcrumbs }: Props) {
         router.patch(route('store.update'), params, {
             preserveScroll: true,
             onSuccess: () => {
-                // Optionally show a toast or some feedback
                 console.log('Profile updated');
             },
             onError: (errors) => {
-                // react-hook-form will pick up on the validation errors
                 console.error(errors);
             },
         });

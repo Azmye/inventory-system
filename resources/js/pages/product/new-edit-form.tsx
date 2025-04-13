@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useForm } from 'react-hook-form';
 
 interface Category {
@@ -361,11 +361,8 @@ export default function NewEditForm({ categories, breadcrumbs, product }: Props)
                                     />
 
                                     <div className="flex justify-end space-x-4">
-                                        <Button variant="outline" asChild>
-                                            <Link href={route('products.index')}>Cancel</Link>
-                                        </Button>
                                         <Button type="submit" disabled={isSubmitting}>
-                                            {product?.id ? 'Update Product' : 'Create Product'}
+                                            {product?.id ? 'Update' : 'Save'}
                                         </Button>
                                     </div>
                                 </form>

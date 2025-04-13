@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
+import { idrFormatter } from '@/lib/utils';
 import { BreadcrumbItem, Product } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 
@@ -11,12 +12,13 @@ interface Props {
 }
 
 export default function ProductIndex({ products, breadcrumbs }: Props) {
+    console.log(products);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Products" />
             <div className="space-y-6 px-6 py-6">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold tracking-tight">Products</h1>
+                    <h1 className="text-2xl font-bold tracking-tight">Product Management</h1>
                     <Button asChild>
                         <Link href={route('products.create')}>Add Product</Link>
                     </Button>
@@ -32,7 +34,7 @@ export default function ProductIndex({ products, breadcrumbs }: Props) {
                                 <TableHead className="text-right">Cost</TableHead>
                                 <TableHead className="text-right">Stock</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead className="text-right">Actions</TableHead>
+                                <TableHead className="text-center">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -44,19 +46,29 @@ export default function ProductIndex({ products, breadcrumbs }: Props) {
                                         </Link>
                                     </TableCell>
                                     <TableCell>{product.category?.name || '-'}</TableCell>
-                                    <TableCell className="text-right">${product.price.toFixed(2)}</TableCell>
-                                    <TableCell className="text-right">${product.cost.toFixed(2)}</TableCell>
-                                    <TableCell className="text-right"></TableCell>
+                                    <TableCell className="text-right">{idrFormatter.format(product.price)}</TableCell>
+                                    <TableCell className="text-right">{idrFormatter.format(product.cost)}</TableCell>
+                                    <TableCell className="text-right">{product.stock.quantity}</TableCell>
                                     <TableCell>
                                         <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>{product.status}</Badge>
                                     </TableCell>
-                                    <TableCell className="text-right">
-                                        <Button variant="ghost" size="sm" asChild>
+                                    <TableCell className="flex justify-center gap-2">
+                                        <Button size="sm" asChild>
                                             <Link href={route('products.edit', product.id)}>Edit</Link>
+                                        </Button>
+                                        <Button variant="destructive" size="sm" asChild>
+                                            <Link href={route('categories.destroy', product.id)}>Delete</Link>
                                         </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
+                            {products.length === 0 && (
+                                <TableRow>
+                                    <TableCell colSpan={7} className="text-center">
+                                        No products found
+                                    </TableCell>
+                                </TableRow>
+                            )}
                         </TableBody>
                     </Table>
                 </div>

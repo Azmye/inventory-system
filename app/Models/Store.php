@@ -42,4 +42,9 @@ class Store extends Model
     {
         return $this->hasMany(StockTransaction::class);
     }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
 }

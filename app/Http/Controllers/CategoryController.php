@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $store = Auth::user()->stores()->first();
+        $store = Auth::user()->stores()->with('categories')->first();
 
         if (!$store) {
             return redirect()->route('store.profile')
@@ -20,14 +20,29 @@ class CategoryController extends Controller
 
         $categories = $store->categories;
 
-        return Inertia::render('Categories/Index', [
-            'categories' => $categories
+
+        $breadcrumbs = [
+            ['title' => 'Categories', 'href' => route('categories.index')],
+
+        ];
+
+        return Inertia::render('category/index', [
+            'categories' => $categories,
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('Categories/Create');
+        $breadcrumbs = [
+            ['title' => 'Categories', 'href' => route('categories.index')],
+            ['title' => 'Create', 'href' => route('categories.create')],
+
+        ];
+
+        return Inertia::render('category/new-edit-form', [
+            'breadcrumbs' => $breadcrumbs
+        ]);
     }
 
     public function store(Request $request)
@@ -56,7 +71,7 @@ class CategoryController extends Controller
     {
         $this->authorize('update', $category);
 
-        return Inertia::render('Categories/Edit', [
+        return Inertia::render('category/new-edit-form', [
             'category' => $category
         ]);
     }

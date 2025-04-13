@@ -191,7 +191,7 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('products.show', $product->id)
+        return redirect()->route('products.index', $product->id)
             ->with('success', 'Product updated successfully.');
     }
 
