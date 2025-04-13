@@ -24,7 +24,7 @@ class StockController extends Controller
             ->with('product')
             ->get();
 
-        return Inertia::render('Stocks/Index', [
+        return Inertia::render('stock/index', [
             'stocks' => $stocks
         ]);
     }
@@ -42,7 +42,7 @@ class StockController extends Controller
             ->where('status', 'active')
             ->get();
 
-        return Inertia::render('Stocks/Create', [
+        return Inertia::render('stock/new-edit-form', [
             'products' => $products,
             'type' => 'in'
         ]);
@@ -67,7 +67,7 @@ class StockController extends Controller
                 return $product;
             });
 
-        return Inertia::render('Stocks/Create', [
+        return Inertia::render('stock/new-edit-form', [
             'products' => $products,
             'type' => 'out'
         ]);
@@ -154,7 +154,7 @@ class StockController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return Inertia::render('Stocks/History', [
+        return Inertia::render('stock/history', [
             'product' => $product,
             'transactions' => $transactions
         ]);
@@ -204,7 +204,7 @@ class StockController extends Controller
             ->limit(10)
             ->get();
 
-        return Inertia::render('Stocks/Report', [
+        return Inertia::render('stock/report', [
             'summary' => [
                 'totalStockValue' => $totalStockValue,
                 'totalItems' => $totalItems,

@@ -11,6 +11,7 @@ class AppServiceProvider extends ServiceProvider
         'App\Models\Store' => 'App\Policies\StorePolicy',
         'App\Models\Product' => 'App\Policies\ProductPolicy',
         'App\Models\Category' => 'App\Policies\CategoryPolicy',
+        'App\Models\Stock' => 'App\Policies\StockPolicy',
     ];
     /**
      * Register any application services.
