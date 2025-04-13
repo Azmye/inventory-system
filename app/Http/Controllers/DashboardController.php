@@ -20,9 +20,12 @@ class DashboardController extends Controller
                 ->with('message', 'Please set up your store profile first.');
         }
 
+        $breadcrumbs = [
+            ['title' => 'Dashboard', 'href' => route('dashboard')]
+        ];
+
         // Get product count
         $productCount = $store->products()->count();
-
 
         // Get total stock value
         $stockValue = Stock::where('stocks.store_id', $store->id)
@@ -44,26 +47,50 @@ class DashboardController extends Controller
             ->get();
 
         // Get top selling products
-        $topProducts = StockTransaction::where('store_id', $store->id)
-            ->where('type', 'out')
-            ->with('product')
-            ->selectRaw('product_id, SUM(quantity) as total_sold')
-            ->groupBy('product_id')
+        $topProducts = Product::where('products.store_id', $store->id)
+            ->leftJoin('stock_transactions', function ($join) {
+                $join->on('products.id', '=', 'stock_transactions.product_id')
+                    ->where('stock_transactions.type', '=', 'out');
+            })
+            ->selectRaw('products.id, products.name, COALESCE(SUM(stock_transactions.quantity), 0) as total_sold')
+            ->groupBy('products.id', 'products.name')
             ->orderBy('total_sold', 'desc')
             ->limit(5)
             ->get();
 
-        $store = Auth::user()->stores()->first();
+        // Get today's transaction count
+        $todayTransactionCount = StockTransaction::where('store_id', $store->id)
+            ->whereDate('created_at', today())
+            ->count();
+
+        // Get low stock products for the second card
+        $lowStockProducts = Stock::where('store_id', $store->id)
+            ->whereRaw('quantity <= reorder_level')
+            ->with('product')
+            ->limit(5)
+            ->get()
+            ->map(function ($stock) {
+                return [
+                    'id' => $stock->product->id,
+                    'name' => $stock->product->name,
+                    'quantity' => $stock->quantity,
+                    'reorder_level' => $stock->reorder_level
+                ];
+            });
+
 
 
         return Inertia::render('dashboard', [
+            'breadcrumbs' => $breadcrumbs,
             'stats' => [
                 'productCount' => $productCount,
                 'stockValue' => $stockValue,
                 'lowStockCount' => $lowStockCount,
+                'todayTransactionCount' => $todayTransactionCount,
             ],
             'recentTransactions' => $recentTransactions,
             'topProducts' => $topProducts,
+            'lowStockProducts' => $lowStockProducts,
             'store' => $store
         ]);
     }
