@@ -85,9 +85,9 @@ export interface Product {
     weight: number;
     image: string;
     status: string;
-    stock: Stock;
     stockTransactions: StockTransaction[];
     category: Category;
+    current_stock: number;
     created_at: string;
     updated_at: string;
 }

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { idrFormatter } from '@/lib/utils';
-import { Product, Stock, StockTransaction } from '@/types';
+import { BreadcrumbItem, Product, Stock, StockTransaction } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { AlertCircle, DollarSign, Package } from 'lucide-react';
@@ -17,6 +17,7 @@ type TopSellingProducts = {
 };
 
 interface Props {
+    breadcrumbs: BreadcrumbItem[];
     summary: {
         totalStockValue: number;
         totalItems: number;
@@ -30,7 +31,7 @@ interface Props {
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
-export default function Report({ summary, topSellingProducts, recentTransactions, stocks }: Props) {
+export default function Report({ breadcrumbs, summary, topSellingProducts, recentTransactions, stocks }: Props) {
     console.log({
         topSellingProducts,
         recentTransactions,
@@ -59,13 +60,13 @@ export default function Report({ summary, topSellingProducts, recentTransactions
     const stockByCategoryData = Object.values(stockByCategory);
 
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Stock Report" />
 
-            <div className="py-12">
+            <div className="px-4 py-12 md:px-0">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="mb-6 flex items-center justify-between">
-                        <h2 className="text-xl font-semibold text-gray-900">Stock Report</h2>
+                        <h2 className="text-xl font-semibold">Stock Report</h2>
                         <Button asChild variant="outline">
                             <Link href={route('stocks.index')}>Back to Stocks</Link>
                         </Button>

@@ -37,10 +37,10 @@ export default function Dashboard({ breadcrumbs, stats, store, recentTransaction
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="py-12">
+            <div className="px-4 py-12 md:px-0">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                        <Card className="col-span-4">
+                        <Card className="col-span-1 md:col-span-4">
                             <CardHeader className="flex flex-row items-center justify-between pb-2">
                                 <CardTitle>{store.name}</CardTitle>
                                 <Button asChild>

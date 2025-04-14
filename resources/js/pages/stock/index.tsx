@@ -18,9 +18,9 @@ export default function Index({ stocks, breadcrumbs }: Props) {
 
             <div className="py-6">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6">
-                    <div className="mb-6 flex items-center justify-between">
+                    <div className="mb-6 flex flex-col justify-start md:flex-row md:items-center md:justify-between">
                         <h1 className="text-2xl font-semibold">Stock Management</h1>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col gap-2">
                             <Button asChild variant="outline" size="sm">
                                 <Link href={route('stocks.report')}>
                                     <BarChart4 className="mr-2 h-4 w-4" />
